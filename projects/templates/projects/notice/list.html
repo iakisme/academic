@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% block title %}通知管理{% endblock %}
+{% block content %}
+    <!-- 表格-->
+    <div class="box">
+        <div class="box-body">
+            {% if request.user.username == 'admin' %}
+            <a href="{% url 'projects:noticeAdd'%}"><button type="button" class="btn btn-primary">发送通知</button></a>
+            {% endif %}
+            <table class="table table-bordered table-hover" style="margin-top:10px;">
+                <thead>
+                    <tr>
+                        <th>通知内容</th>
+                        <th>会议</th>
+                        <th>创建时间</th>
+                        {% if request.user.username == 'admin' %}
+                        <th>操作</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                {% for o in object_list %}
+                    <tr>
+                        <td>{{ o.message }}</td>
+                        <td>{{ o.meetingInfo.meeting_name }}</td>
+                        <td>{{ o.create_time|date:"Y年m月d日" }}</td>
+                        {% if request.user.username == 'admin' %}
+                        <td>
+                        <div class="btn-group" >
+                          <a class="btn btn-default" href="{% url 'projects:noticeUpdate' pk=o.id %} "
+                             style="margin-left:10px;">修改</a>
+                            <form style="display:inline;" method="POST" action="{% url 'projects:noticeDelete' pk=o.id %}">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-default " style="margin-left:10px;" value="删除"
+                                   onclick="return confirm('确认删除这条记录吗？')">
+                            </form>
+                        </div>
+                        </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+    <div style="margin-left: 30px;">
+        {% bootstrap_pagination page_obj %}
+    </div>
+    </div>
+    <!-- /.box -->
+{% endblock %}

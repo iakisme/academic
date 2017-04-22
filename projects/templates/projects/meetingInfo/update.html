@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load bootstrap3 %}
+{% block content %}
+    <script>
+        jQuery(function () {
+            jQuery(".select2").select2();
+            jQuery(".datepicker").datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+        });
+    </script>
+    <!-- /.box -->
+        <div class="col-md-10">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">修改会议信息</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal" method="post" action="">
+                {% csrf_token %}
+              <div class="box-body">
+                  {% for field in form %}
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{ field.label }}</label>
+                  <div class="col-sm-8">
+                      {% render_field field class+="form-control" %}
+                  </div>
+                </div>
+                  {% endfor %}
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                    <input class="btn btn-default" type="submit" value="保存">
+                    <input class="btn btn-default" type="button" onclick="history.back();" value="返回">
+              </div>
+              <!-- /.box-footer -->
+            </form>
+          </div>
+        </div>
+{% endblock %}

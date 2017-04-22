@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% block title %}会议管理{% endblock %}
+{% block content %}
+    <!-- 表格-->
+    <div class="box">
+        <div class="box-body">
+        {% if request.user.username == 'admin' %}
+            <a href="{% url 'projects:meetingInfoAdd'%}"><button type="button" class="btn btn-primary">添加会议</button></a>
+        {% endif %}
+            <table class="table table-bordered table-hover" style="margin-top:10px;">
+                <thead>
+                    <tr>
+                        <th>会议名称</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>会议地址</th>
+                        <th>会议安排</th>
+                        <th>创建时间</th>
+                        <th>创建人</th>
+                        {% if request.user.username == 'admin' %}
+                        <th>操作</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                {% for o in object_list %}
+                    <tr>
+                        <td>{{ o.meeting_name }}</td>
+                        <td>{{ o.start_time|date:"Y年m月d日" }}</td>
+                        <td>{{ o.end_time|date:"Y年m月d日" }}</td>
+                        <td>{{ o.meeting_address }}</td>
+                        <td>{{ o.meeting_plan }}</td>
+                        <td>{{ o.create_time|date:"Y年m月d日" }}</td>
+                        <td>{{ o.create_user }}</td>
+                        {% if request.user.username == 'admin' %}
+                        <td>
+                        <div class="btn-group" >
+                          <a class="btn btn-default" href="{% url 'projects:meetingInfoUpdate' pk=o.id %} "
+                             style="margin-left:10px;">修改</a>
+                            <form style="display:inline;" method="POST" action="{% url 'projects:meetingInfoDelete' pk=o.id %}">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-default " style="margin-left:10px;" value="删除"
+                                   onclick="return confirm('确认删除这条记录吗？')">
+                            </form>
+                        </div>
+                        </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+    <div style="margin-left: 30px;">
+        {% bootstrap_pagination page_obj %}
+    </div>
+    </div>
+    <!-- /.box -->
+{% endblock %}
