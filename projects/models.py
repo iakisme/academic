@@ -21,7 +21,7 @@ class ThesisInfo(models.Model):
     headline = models.CharField(verbose_name="摘要", max_length=100)
     keyword = models.CharField(verbose_name="关键词", max_length=50)
     user = models.ForeignKey(User,verbose_name="用户")
-    thesisUrl = models.FileField(verbose_name="论文保存地址", upload_to='projects/static/documents/%Y/%m/%d')
+    thesisUrl = models.FileField(verbose_name="论文上传", upload_to='projects/static/documents/%Y/%m/%d')
     auditStatus = models.IntegerField(verbose_name="审核状态", choices=STATUS,blank=True,null=True)
     reviewStatus = models.IntegerField(verbose_name="评审状态", choices=STATUS,blank=True,null=True)
     create_time = models.DateTimeField(verbose_name="创建时间",default='2017-4-23')
