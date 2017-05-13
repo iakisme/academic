@@ -2,18 +2,15 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth import views
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.views import _get_login_redirect_url
 from django.contrib.sites.shortcuts import get_current_site
-from django.dispatch import receiver
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django_filters.views import FilterView
-from django.db.models import signals
 from projects.form import ThesisInfoAddForm
-from projects.models import Notice, ThesisInfo
+from projects.models import ThesisInfo
 
 
 @csrf_protect
@@ -28,7 +25,7 @@ def login(request, template_name='registration/login.html',
     redirect_to = request.POST.get(redirect_field_name, request.GET.get(redirect_field_name, ''))
 
     if redirect_authenticated_user and request.user.is_authenticated:
-        redirect_to = _get_login_redirect_url(request, redirect_to)
+        #redirect_to = _get_login_redirect_url(request, redirect_to)
         if redirect_to == request.path:
             raise ValueError(
                 "Redirection loop for authenticated user detected. Check that "
